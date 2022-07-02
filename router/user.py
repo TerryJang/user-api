@@ -1,6 +1,7 @@
 import logging
+from http import HTTPStatus
 
-from flask import Blueprint, request, make_response
+from flask import Blueprint, request, make_response, jsonify
 
 from service.user import UserService
 from serializer.user import UserInfoResponseSchema, UserSignUpRequestSchema, UserLoginRequestSchema
@@ -21,7 +22,7 @@ def login():
 def sign_up():
     validated_data = UserSignUpRequestSchema().load(request.json)
     UserService.create_user_info(validated_data)
-    return {}
+    return make_response(jsonify({'response': {}}), HTTPStatus.OK)
 
 
 @user.route('/<int:user_id>', methods=['GET'])
@@ -29,7 +30,7 @@ def get_user_info(user_id):
     # TODO: token 검증
     user_info = UserService.get_user_info(user_id=user_id)
     response = UserInfoResponseSchema().dump(user_info)
-    return make_response(response)
+    return make_response(jsonify({'response': response}), HTTPStatus.OK)
 
 
 @user.route('/password', methods=['PATCH'])

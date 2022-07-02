@@ -1,9 +1,7 @@
-from sqlalchemy.ext.declarative import declarative_base
+from engine.mysql import Base
 from sqlalchemy import Column, BigInteger, Integer, String, DateTime, func
 
 from common.status_enum import UserStatusEnum
-
-Base = declarative_base()
 
 
 class UserModel(Base):
@@ -16,8 +14,8 @@ class UserModel(Base):
     name = Column(String(255), comment='이름')
     nickname = Column(String(15), comment='닉네임')
     phone = Column(String(255), comment='핸드폰 번호')
-    created = Column(DateTime, default=func.now(), comment='생성일')
-    updated = Column(DateTime, default=func.now(), onupdate=func.now(), comment='변경일')
+    created_at = Column(DateTime, default=func.now(), comment='생성일')
+    updated_at = Column(DateTime, default=func.now(), onupdate=func.now(), comment='변경일')
 
     @staticmethod
     def get_user_info(session, user_id=None, email=None):
@@ -35,5 +33,4 @@ class UserModel(Base):
     def create_user(session, data):
         user = UserModel(**data)
         session.add(user)
-        session.commit()
         return True
