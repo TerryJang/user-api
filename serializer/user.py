@@ -1,4 +1,6 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validates_schema, ValidationError
+
+from common.utils import Utils
 
 
 class UserBaseSchema(Schema):
@@ -9,12 +11,25 @@ class UserBaseSchema(Schema):
 
 
 class UserInfoResponseSchema(UserBaseSchema):
-    created = fields.String()
+    created_at = fields.String()
 
 
 class UserSignUpRequestSchema(UserBaseSchema):
     password = fields.String(required=True)
 
+    @validates_schema
+    def validate_signup_data(self, data, **kwargs):
+        for key in data:
+            if key == 'email':
+                result = Utils.validate_email(data[key])
+                if result is False:
+                    raise ValidationError('유효하지 않은 이메일 입니다.')
+
+            if key == 'password':
+                pass
+
+            if key == 'phone':
+                pass
 
 class UserLoginRequestSchema(Schema):
     email = fields.String(required=True)
