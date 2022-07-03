@@ -1,7 +1,7 @@
 from common.utils import Utils
 from engine.mysql import mysql_connection_pool
 from models.auth_phone import AuthPhoneModel
-from exception import InvalidParam, ServerError
+from exception import InvalidParam, ServerError, DEFINED_EXCEPTIONS
 
 
 class AuthPhoneService:
@@ -14,6 +14,8 @@ class AuthPhoneService:
             AuthPhoneModel.create_auth_phone(session=session, data=data)
 
         except Exception as e:
+            if any([isinstance(e, exc) for exc in DEFINED_EXCEPTIONS]):
+                raise e
             raise ServerError(reason='서버 오류가 발생 했습니다.')
 
         finally:
@@ -34,6 +36,8 @@ class AuthPhoneService:
             AuthPhoneModel.update_auth_phone(session=session, phone=phone, code=code)
 
         except Exception as e:
+            if any([isinstance(e, exc) for exc in DEFINED_EXCEPTIONS]):
+                raise e
             raise ServerError(reason='서버 오류가 발생 했습니다.')
 
         finally:

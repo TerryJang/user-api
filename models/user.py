@@ -34,3 +34,11 @@ class UserModel(Base):
         user = UserModel(**data)
         session.add(user)
         return True
+
+    @staticmethod
+    def update_password(session, email, password):
+        session.query(UserModel).filter(
+            UserModel.email == email,
+            UserModel.status == UserStatusEnum.joined.value
+        ).update({'password': password})
+        return True

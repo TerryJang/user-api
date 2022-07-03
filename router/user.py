@@ -4,7 +4,7 @@ from http import HTTPStatus
 from flask import Blueprint, request, make_response, jsonify
 
 from service.user import UserService
-from serializer.user import UserInfoResponseSchema, UserSignUpRequestSchema, UserLoginRequestSchema
+from serializer.user import UserInfoResponseSchema, UserSignUpRequestSchema, UserLoginRequestSchema, UserUpdatePasswordRequestSchema
 
 user = Blueprint('user', __name__, url_prefix='/user')
 logger = logging.getLogger('server')
@@ -22,7 +22,7 @@ def login():
 def sign_up():
     validated_data = UserSignUpRequestSchema().load(request.json)
     UserService.create_user_info(validated_data)
-    return make_response(jsonify({'response': {}}), HTTPStatus.OK)
+    return make_response(jsonify({'response': {}}), HTTPStatus.CREATED)
 
 
 @user.route('/<int:user_id>', methods=['GET'])
@@ -35,4 +35,6 @@ def get_user_info(user_id):
 
 @user.route('/password', methods=['PATCH'])
 def update_password():
-    pass
+    validated_data = UserUpdatePasswordRequestSchema().load(request.json)
+    UserService.update_user_password(validated_data)
+    return make_response(jsonify({'response': {}}), HTTPStatus.OK)

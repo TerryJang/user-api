@@ -16,6 +16,7 @@ class UserInfoResponseSchema(UserBaseSchema):
 
 class UserSignUpRequestSchema(UserBaseSchema):
     password = fields.String(required=True)
+    code = fields.String(required=True)
 
     @validates_schema
     def validate_signup_data(self, data, **kwargs):
@@ -31,6 +32,14 @@ class UserSignUpRequestSchema(UserBaseSchema):
             if key == 'phone':
                 pass
 
+
 class UserLoginRequestSchema(Schema):
     email = fields.String(required=True)
     password = fields.String(required=True)
+
+
+class UserUpdatePasswordRequestSchema(Schema):
+    email = fields.String(required=True)
+    password = fields.String(required=True)
+    phone = fields.String(required=True)
+    code = fields.String(required=True)
