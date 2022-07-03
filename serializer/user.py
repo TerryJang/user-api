@@ -27,10 +27,9 @@ class UserSignUpRequestSchema(UserBaseSchema):
                     raise ValidationError('유효하지 않은 이메일 입니다.')
 
             if key == 'password':
-                pass
-
-            if key == 'phone':
-                pass
+                result = Utils.validate_password(data[key])
+                if result is False:
+                    raise ValidationError('유효하지 않은 비밀번호 입니다.')
 
 
 class UserLoginRequestSchema(Schema):

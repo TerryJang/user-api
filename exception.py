@@ -67,6 +67,9 @@ def register_error_handler(app):
 
     @app.errorhandler(ValidationError)
     def handle_error(error):
+        if error.messages.get('_schema') is not None:
+            return make_response(jsonify({'reason': error.messages['_schema'][0]}), HTTPStatus.BAD_REQUEST)
+
         return make_response(jsonify({'reason': "요청 정보가 올바르지 않습니다."}), HTTPStatus.BAD_REQUEST)
 
 
