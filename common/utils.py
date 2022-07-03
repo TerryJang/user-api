@@ -22,6 +22,22 @@ class Utils:
         return True
 
     @staticmethod
+    def validate_password(password):
+        if len(password) < 8:
+            return False
+        if re.search('[a-z]', password) is None:
+            return False
+        if re.search('[0-9]', password) is None:
+            return False
+        if re.search('[A-Z]', password) is None:
+            return False
+        if password.isalnum():
+            return False
+
+        return True
+
+
+    @staticmethod
     def encode_token(data):
         return jwt.encode(data, key=CONFIG['token_secret_key'])
 
