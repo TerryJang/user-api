@@ -20,6 +20,13 @@ class InvalidParam(BaseErrorHandler):
         self.request_url = '{} {}'.format(request.method, request.full_path)
 
 
+class AlreadyExist(BaseErrorHandler):
+    def __init__(self, reason, status_code=None):
+        self.status_code = HTTPStatus.CONFLICT if not status_code else status_code
+        self.reason = reason
+        self.request_url = '{} {}'.format(request.method, request.full_path)
+
+
 class NotFoundContent(BaseErrorHandler):
     def __init__(self, reason, status_code=None):
         self.status_code = HTTPStatus.NOT_FOUND if not status_code else status_code
@@ -60,4 +67,13 @@ def register_error_handler(app):
 
     @app.errorhandler(ValidationError)
     def handle_error(error):
-        return make_response(jsonify({'reason': error.messages['_schema'][0]}), HTTPStatus.BAD_REQUEST)
+        return make_response(jsonify({'reason': "요청 정보가 올바르지 않습니다."}), HTTPStatus.BAD_REQUEST)
+
+
+DEFINED_EXCEPTIONS = (
+    AlreadyExist,
+    InvalidAuthentication,
+    InvalidParam,
+    NotFoundContent,
+    ServerError,
+)
