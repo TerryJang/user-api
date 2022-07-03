@@ -61,7 +61,7 @@ class UserService:
             if check_password is False:
                 raise InvalidParam('비밀번호가 유효하지 않습니다.')
 
-            return True
+            return user_info.id
 
         except Exception as e:
             if any([isinstance(e, exc) for exc in DEFINED_EXCEPTIONS]):

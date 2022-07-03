@@ -3,4 +3,6 @@ mysql:
   port:
   user:
   password:
-  db:
+  db: "develop"
+
+token_secret_key: "secret_key"
