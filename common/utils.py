@@ -1,6 +1,10 @@
 import re
 import random
 
+import jwt
+from exception import InvalidParam
+from settings import CONFIG
+
 
 class Utils:
     @staticmethod
@@ -16,3 +20,15 @@ class Utils:
             return False
 
         return True
+
+    @staticmethod
+    def encode_token(data):
+        return jwt.encode(data, key=CONFIG['token_secret_key'])
+
+    @staticmethod
+    def decode_token(token):
+        try:
+            return jwt.decode(token, key=CONFIG['token_secret_key'], algorithms='HS256')
+        except Exception as e:
+            raise InvalidParam('토큰이 유효하지 않습니다.')
+

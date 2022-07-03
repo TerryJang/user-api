@@ -16,3 +16,6 @@ def get_config():
         except Exception as e:
             logging.error(f'[CONFIG_ERROR] {str(e)}')
     return {}
+
+
+CONFIG = get_config()
