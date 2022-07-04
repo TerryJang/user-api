@@ -18,11 +18,10 @@ class AuthPhoneModel(Base):
         session.add(auth_phone)
 
     @staticmethod
-    def get_auth_phone(session, phone, code):
+    def get_auth_phone(session, phone):
         return session.query(AuthPhoneModel).filter(
             AuthPhoneModel.phone == phone,
-            AuthPhoneModel.code == code,
-        ).order_by(AuthPhoneModel.updated_at.desc()).first()
+        ).order_by(AuthPhoneModel.id.desc()).first()
 
     @staticmethod
     def update_auth_phone(session, phone, code):

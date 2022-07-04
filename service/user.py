@@ -33,10 +33,7 @@ class UserService:
             if user_info is not None:
                 raise InvalidParam("이미 가입된 이메일 입니다.")
 
-            auth_phone = AuthPhoneModel.get_auth_phone(session=session, phone=data['phone'], code=code)
-            if auth_phone.is_confirm is False:
-                raise InvalidParam("핸드폰 인증이 완료되지 않았습니다. 완료 후 다시 시도해 주세요.")
-
+            check_auth_phone(session=session, phone=data['phone'], code=code)
             data['password'] = bcrypt.hashpw(data["password"].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             UserModel.create_user(session=session, data=data)
             return True
@@ -81,10 +78,7 @@ class UserService:
             if user_info is None:
                 raise InvalidParam("회원정보가 유효하지 않습니다.")
 
-            auth_phone = AuthPhoneModel.get_auth_phone(session=session, phone=data['phone'], code=data['code'])
-            if auth_phone is None or auth_phone.is_confirm is False:
-                raise InvalidParam("핸드폰 인증이 완료되지 않았습니다. 완료 후 다시 시도해 주세요.")
-
+            check_auth_phone(session=session, phone=data['phone'], code=data['code'])
             data['password'] = bcrypt.hashpw(data["password"].encode('utf-8'), bcrypt.gensalt())
             UserModel.update_password(session=session, email=data['email'], password=data['password'])
             return True
@@ -97,3 +91,11 @@ class UserService:
         finally:
             session.commit()
             session.close()
+
+
+def check_auth_phone(session, phone, code):
+    auth_phone = AuthPhoneModel.get_auth_phone(session=session, phone=phone)
+    if auth_phone is None or auth_phone.is_confirm is False or auth_phone.code != code:
+        raise InvalidParam("핸드폰 인증이 완료되지 않았습니다. 완료 후 다시 시도해 주세요.")
+
+    return True
