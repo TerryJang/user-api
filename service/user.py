@@ -28,15 +28,16 @@ class UserService:
     def create_user_info(data):
         session = mysql_connection_pool.get_connection()
         try:
+            code = data.pop('code')
             user_info = UserModel.get_user_info(session=session, email=data['email'])
             if user_info is not None:
                 raise InvalidParam("이미 가입된 이메일 입니다.")
 
-            auth_phone = AuthPhoneModel.update_auth_phone(session=session, phone=data['phone'], code=data['code'])
+            auth_phone = AuthPhoneModel.get_auth_phone(session=session, phone=data['phone'], code=code)
             if auth_phone.is_confirm is False:
                 raise InvalidParam("핸드폰 인증이 완료되지 않았습니다. 완료 후 다시 시도해 주세요.")
 
-            data['password'] = bcrypt.hashpw(data["password"].encode('utf-8'), bcrypt.gensalt())
+            data['password'] = bcrypt.hashpw(data["password"].encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
             UserModel.create_user(session=session, data=data)
             return True
 

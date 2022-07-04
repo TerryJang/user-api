@@ -1,6 +1,5 @@
 from engine.mysql import Base
-from sqlalchemy import Column, BigInteger, Integer, String, DateTime, Boolean, func
-
+from sqlalchemy import Column, BigInteger, String, DateTime, Boolean, func
 
 
 class AuthPhoneModel(Base):

@@ -7,7 +7,7 @@ from common.status_enum import UserStatusEnum
 class UserModel(Base):
     __tablename__ = 'user'
 
-    id = Column(BigInteger, primary_key=True, comment='아이디')
+    id = Column(BigInteger, primary_key=True, autoincrement=True, comment='아이디')
     email = Column(String(255), comment='이메일')
     password = Column(String(255), comment='비밀번호')
     status = Column(Integer, comment='유저상태', default=UserStatusEnum.joined.value)
