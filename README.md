@@ -9,7 +9,7 @@ User Join, Login API
  - 기본+테스트 : ```pip install -r requirement/test.txt```
 
 ### 2. Mysql DB 스키마 및 테이블 생성
- - sql 폴더 내에 Query를 mysql에서 실행합니다.
+ - sql/user.sql 파일안에  Query를 mysql에서 실행합니다.
 
 ### 3. Config 설정
   - config 폴더 내 configuration.yaml 파일을 복사하여 local.yaml 파일을 생성합니다.
