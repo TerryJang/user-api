@@ -14,7 +14,7 @@ def create_auth_phone_code():
     validated_data = AuthPhoneCreateRequestSchema().load(request.json)
     code = AuthPhoneService.create_auth_phone(validated_data['phone'])
     # TODO : 이메일로 코드 전송
-    return make_response(jsonify({'response': {}}), HTTPStatus.OK)
+    return make_response(jsonify({'response': {'code': code}}), HTTPStatus.OK)
 
 
 @auth_phone.route('/', methods=['PATCH'])

@@ -22,7 +22,7 @@ class AuthPhoneService:
             session.commit()
             session.close()
 
-        return True
+        return code
 
     @staticmethod
     def validate_auth_phone(phone, code):

@@ -42,3 +42,11 @@ class UserUpdatePasswordRequestSchema(Schema):
     password = fields.String(required=True)
     phone = fields.String(required=True)
     code = fields.String(required=True)
+
+    @validates_schema
+    def validate_signup_data(self, data, **kwargs):
+        for key in data:
+            if key == 'password':
+                result = Utils.validate_password(data[key])
+                if result is False:
+                    raise ValidationError('유효하지 않은 비밀번호 입니다.')

@@ -1,9 +1,10 @@
+import os
 import logging
 
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-
+from settings import ROOT_PATH
 
 Base = declarative_base()
 logger = logging.getLogger('server')
@@ -15,9 +16,13 @@ class MysqlConnectionPool:
 
     def setup(self,  config: dict):
         try:
-            self.config = config
-            mysql_config = self.config["mysql"]
-            self.engine = create_engine(f'mysql+mysqldb://{mysql_config["user"]}:{mysql_config["password"]}@{mysql_config["host"]}:{mysql_config["port"]}/{mysql_config["db"]}')
+            if os.environ.get('APPLICATION_ENV') == 'test':
+                url = f'sqlite:///{ROOT_PATH}/test.db'
+                self.engine = create_engine(url)
+            else:
+                self.config = config
+                mysql_config = self.config["mysql"]
+                self.engine = create_engine(f'mysql+mysqldb://{mysql_config["user"]}:{mysql_config["password"]}@{mysql_config["host"]}:{mysql_config["port"]}/{mysql_config["db"]}')
         except Exception as e:
             logging.error(f'[ERROR] {str(e)}')
 
