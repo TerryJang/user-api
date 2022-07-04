@@ -35,7 +35,7 @@ class UserAPITestCase(unittest.TestCase):
         rv = self.app.get('/')
         assert rv.status_code == HTTPStatus.OK
 
-    def test_user_info(self):
+    def test_get_user_info(self):
         token = self.test_login()
         rv = self.app.get(
             path='/user/',
@@ -56,7 +56,6 @@ class UserAPITestCase(unittest.TestCase):
 
     def test_update_auth_phone(self):
         code = self.test_create_auth_code()
-
         res = self.app.patch(
             path='/auth-phone/',
             content_type='application/json',
@@ -70,7 +69,6 @@ class UserAPITestCase(unittest.TestCase):
 
     def test_signup(self):
         code = self.test_update_auth_phone()
-
         res = self.app.post(
             path='/user/signup',
             content_type='application/json',
