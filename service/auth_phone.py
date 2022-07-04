@@ -28,8 +28,8 @@ class AuthPhoneService:
     def validate_auth_phone(phone, code):
         session = mysql_connection_pool.get_connection()
         try:
-            auth_phone = AuthPhoneModel.get_auth_phone(session=session, phone=phone, code=code)
-            if auth_phone is None:
+            auth_phone = AuthPhoneModel.get_auth_phone(session=session, phone=phone)
+            if auth_phone is None or auth_phone.code != code:
                 raise InvalidParam(reason='인증 코드가 유효하지 않습니다. 확인 후 다시 시도해 주세요.')
             if auth_phone.is_confirm is True:
                 raise InvalidParam(reason='이미 인증이 완료된 코드 입니다. 인증을 다시 시도해 주세요.')
