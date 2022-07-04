@@ -1,0 +1,8 @@
+mysql:
+  host:
+  port:
+  user:
+  password:
+  db: "develop"
+
+token_secret_key: "secret_key"
