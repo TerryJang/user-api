@@ -2,8 +2,7 @@
 User Join, Login API
 
 ## 최초 환경 설정
- - python 3.9
- - mysql
+ - python 3.9와 mysql이 설치되어 있어야 합니다.
 
 ### 1. 패키지 설치
  - 기본설치 : ```pip install -r requirement/base.txt```
