@@ -21,7 +21,7 @@ class AuthPhoneModel(Base):
     def get_auth_phone(session, phone):
         return session.query(AuthPhoneModel).filter(
             AuthPhoneModel.phone == phone,
-        ).order_by(AuthPhoneModel.updated_at.desc()).first()
+        ).order_by(AuthPhoneModel.id.desc()).first()
 
     @staticmethod
     def update_auth_phone(session, phone, code):
