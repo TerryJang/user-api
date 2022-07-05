@@ -3,7 +3,7 @@ import random
 
 import jwt
 from exception import InvalidParam
-from settings import CONFIG
+from settings import get_config
 
 
 class Utils:
@@ -39,12 +39,14 @@ class Utils:
 
     @staticmethod
     def encode_token(data):
-        return jwt.encode(data, key=CONFIG['token_secret_key'])
+        config = get_config()
+        return jwt.encode(data, key=config['token_secret_key'])
 
     @staticmethod
     def decode_token(token):
+        config = get_config()
         try:
-            return jwt.decode(token, key=CONFIG['token_secret_key'], algorithms='HS256')
+            return jwt.decode(token, key=config['token_secret_key'], algorithms='HS256')
         except Exception as e:
             raise InvalidParam('토큰이 유효하지 않습니다.')
 

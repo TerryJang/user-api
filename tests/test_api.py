@@ -7,18 +7,19 @@ from sqlalchemy.orm.session import close_all_sessions
 from sqlalchemy import BigInteger
 from sqlalchemy.ext.compiler import compiles
 
-from main import app
 from engine.mysql import mysql_connection_pool, Base
-from settings import CONFIG
+from settings import get_config
 
 
 class UserAPITestCase(unittest.TestCase):
 
     def setUp(self):
         os.environ['APPLICATION_ENV'] = 'test'
+        from main import app
         self.app = app.test_client()
 
-        mysql_connection_pool.setup(CONFIG)
+        config = get_config()
+        mysql_connection_pool.setup(config)
         for table in Base.__subclasses__():
             table.__table__.create(bind=mysql_connection_pool.engine, checkfirst=True)
 
